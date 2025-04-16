@@ -9,7 +9,15 @@ const Login: React.FC<LoginProps> = ({ onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4">
-      <div className="bg-white rounded-xl w-full max-w-3xl flex flex-col md:flex-row overflow-hidden shadow-xl">
+      <div className="bg-white rounded-xl w-full max-w-3xl flex flex-col md:flex-row overflow-hidden shadow-xl relative">
+        {/* Close Button - Top right corner of the modal */}
+        <button
+          onClick={onClose}
+          className="absolute top-2 right-2 bg-transparent text-gray-400 hover:text-gray-600 text-2xl z-10 focus:outline-none focus:ring-0 ring-0 border-none"
+        >
+          &times;
+        </button>
+
         {/* Left section with image and text */}
         <div className="w-full md:w-1/2 bg-blue-100 p-6 flex flex-col items-center justify-center text-center">
           <img
@@ -26,14 +34,7 @@ const Login: React.FC<LoginProps> = ({ onClose }) => {
         </div>
 
         {/* Right section for form */}
-        <div className="w-full md:w-1/2 p-6 relative">
-          <button
-            className="absolute top-2 right-2 text-gray-400 hover:text-gray-600 text-xl"
-            onClick={onClose}
-          >
-            &times;
-          </button>
-
+        <div className="w-full md:w-1/2 p-6">
           <h2 className="text-lg font-semibold mb-4">
             Login or Create an account
           </h2>
