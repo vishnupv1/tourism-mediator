@@ -9,18 +9,19 @@ const Login: React.FC<LoginProps> = ({ onClose }) => {
   const [email, setEmail] = useState<string>("");
   const [otp, setOtp] = useState<string>("");
   const [isOtpSent, setIsOtpSent] = useState<boolean>(false);
-  const [error, setError] = useState<string>("");
+  const [emailError, setEmailError] = useState<string>("");
+  const [otpError, setOtpError] = useState<string>("");
 
   const handleContinue = () => {
     const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     const isValidMobile = /^[0-9]{10}$/.test(email);
 
     if (!email.trim()) {
-      setError("Please enter an email or mobile number.");
+      setEmailError("Please enter an email or mobile number.");
     } else if (!isValidEmail && !isValidMobile) {
-      setError("Enter a valid email or 10-digit mobile number.");
+      setEmailError("Enter a valid email or 10-digit mobile number.");
     } else {
-      setError("");
+      setEmailError("");
       console.log("Proceed with:", email);
       // Simulate sending OTP
       setIsOtpSent(true);
@@ -39,7 +40,7 @@ const Login: React.FC<LoginProps> = ({ onClose }) => {
       console.log("OTP Submitted:", otp);
       // Add further OTP verification logic here
     } else {
-      setError("Please enter a valid 6-digit OTP.");
+      setOtpError("Please enter a valid 6-digit OTP.");
     }
   };
 
@@ -47,7 +48,8 @@ const Login: React.FC<LoginProps> = ({ onClose }) => {
     setEmail("");
     setOtp("");
     setIsOtpSent(false);
-    setError("");
+    setEmailError("");
+    setOtpError("");
   };
 
   return (
@@ -91,24 +93,24 @@ const Login: React.FC<LoginProps> = ({ onClose }) => {
                 value={email}
                 onChange={(e) => {
                   setEmail(e.target.value);
-                  if (error) setError("");
+                  if (emailError) setEmailError("");
                 }}
                 placeholder="Email ID or Mobile Number"
                 className={`w-full border text-gray-600 ${
-                  error ? "border-red-500" : "border-gray-300"
+                  emailError ? "border-red-500" : "border-gray-300"
                 } rounded px-4 py-2 mb-2 focus:outline-purple-500 focus:ring-0 focus:border-none ${
-                  error ? "focus:ring-red-500" : "focus:ring-purple-500"
+                  emailError ? "focus:ring-red-500" : "focus:ring-purple-500"
                 }`}
               />
-              {error && (
-                <div className="text-red-500 text-sm mt-1">{error}</div>
+              {emailError && (
+                <div className="text-red-500 text-sm mt-1">{emailError}</div>
               )}
               <button
                 onClick={handleContinue}
                 disabled={!email.trim()}
                 className={`w-full py-2 rounded text-lg font-medium focus:outline-none focus:ring-0 focus:border-none ${
                   !email.trim()
-                    ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+                    ? "bg-gray-300 text-gray-600 cursor-pointer"
                     : "bg-purple-500 text-white hover:bg-purple-600"
                 }`}
               >
@@ -124,13 +126,13 @@ const Login: React.FC<LoginProps> = ({ onClose }) => {
                 maxLength={6}
                 placeholder="Enter 6-digit OTP"
                 className={`w-full border text-gray-600 ${
-                  error ? "border-red-500" : "border-gray-300"
+                  otpError ? "border-red-500" : "border-gray-300"
                 } rounded px-4 py-2 mb-2 focus:outline-none focus:ring-0 focus:border-none ${
-                  error ? "focus:ring-red-500" : "focus:ring-purple-500"
+                  otpError ? "focus:ring-red-500" : "focus:ring-purple-500"
                 }`}
               />
-              {error && (
-                <div className="text-red-500 text-sm mt-1">{error}</div>
+              {otpError && (
+                <div className="text-red-500 text-sm mt-1">{otpError}</div>
               )}
               <div className="flex gap-2">
                 <button
