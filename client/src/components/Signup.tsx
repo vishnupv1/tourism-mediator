@@ -19,7 +19,6 @@ export default function SignUp() {
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    // Reset success message after 5 seconds
     if (success) {
       const timer = setTimeout(() => setSuccess(false), 5000);
       return () => clearTimeout(timer);
@@ -33,7 +32,6 @@ export default function SignUp() {
       [name]: type === "checkbox" ? checked : value,
     });
 
-    // Clear error when user starts typing
     if (errors[name as keyof typeof errors]) {
       setErrors({
         ...errors,
@@ -51,7 +49,6 @@ export default function SignUp() {
       terms: "",
     };
 
-    // Email validation
     if (!formData.email) {
       newErrors.email = "Email is required";
       valid = false;
@@ -60,7 +57,6 @@ export default function SignUp() {
       valid = false;
     }
 
-    // Password validation
     if (!formData.password) {
       newErrors.password = "Password is required";
       valid = false;
@@ -69,7 +65,6 @@ export default function SignUp() {
       valid = false;
     }
 
-    // Confirm password validation
     if (!formData.confirmPassword) {
       newErrors.confirmPassword = "Please confirm your password";
       valid = false;
@@ -78,7 +73,6 @@ export default function SignUp() {
       valid = false;
     }
 
-    // Terms validation
     if (!formData.terms) {
       newErrors.terms = "You must accept the terms and conditions";
       valid = false;
@@ -94,12 +88,10 @@ export default function SignUp() {
 
     setIsSubmitting(true);
 
-    // Simulate API call
     try {
       await new Promise((resolve) => setTimeout(resolve, 1500));
       console.log("Form submitted:", formData);
       setSuccess(true);
-      // Reset form
       setFormData({
         email: "",
         password: "",
@@ -151,19 +143,46 @@ export default function SignUp() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat px-4 overflow-hidden">
-      <div
-        className="absolute inset-0 bg-gradient-to-br from-purple-900/70 to-blue-900/70 z-0"
-        style={{
-          backgroundImage:
-            'url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1470&q=80")',
-        }}
-      />
+    <div className="min-h-screen flex items-center justify-center px-4 overflow-hidden relative">
+      {/* Abstract background elements */}
+      <div className="absolute inset-0 overflow-hidden z-0">
+        {/* Large floating circles */}
+        <div className="absolute top-1/4 -left-20 w-80 h-80 rounded-full bg-purple-500/10 blur-3xl animate-float-slow" />
+        <div className="absolute bottom-1/4 -right-20 w-96 h-96 rounded-full bg-blue-500/10 blur-3xl animate-float-medium" />
+        <div className="absolute top-1/3 right-1/4 w-64 h-64 rounded-full bg-indigo-500/10 blur-3xl animate-float-fast" />
+
+        {/* Geometric shapes */}
+        <div className="absolute top-1/5 left-1/4 w-40 h-40 bg-gradient-to-br from-purple-600/5 to-blue-600/5 rotate-45 blur-xl" />
+        <div className="absolute bottom-1/5 right-1/4 w-48 h-48 bg-gradient-to-br from-indigo-600/5 to-purple-600/5 rotate-12 blur-xl" />
+
+        {/* Grid pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern
+                id="grid-pattern"
+                width="40"
+                height="40"
+                patternUnits="userSpaceOnUse"
+              >
+                <path
+                  d="M 40 0 L 0 0 0 40"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="0.5"
+                />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grid-pattern)" />
+          </svg>
+        </div>
+      </div>
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="relative z-10 bg-white/90 backdrop-blur-lg p-8 rounded-2xl shadow-2xl w-full max-w-md mx-4"
+        className="relative z-10 bg-white/90 backdrop-blur-lg p-8 rounded-2xl shadow-2xl w-full max-w-md mx-4 border border-white/20"
       >
         {success ? (
           <motion.div
@@ -209,7 +228,7 @@ export default function SignUp() {
             >
               <motion.h1
                 variants={itemVariants}
-                className="text-3xl sm:text-4xl font-bold text-center mb-6 text-gray-800"
+                className="text-3xl sm:text-4xl font-bold text-center mb-6 text-teal-500"
               >
                 Create Account
               </motion.h1>
@@ -235,7 +254,7 @@ export default function SignUp() {
                     placeholder="your@email.com"
                     className={`mt-1 block w-full rounded-md border ${
                       errors.email ? "border-red-500" : "border-gray-300"
-                    } p-3 focus:outline-none focus:ring-2 focus:ring-purple-500 transition duration-200`}
+                    } p-3 focus:outline-none focus:ring-2 focus:ring-purple-500 transition duration-200 bg-white/70 backdrop-blur-sm`}
                   />
                   {errors.email && (
                     <motion.p
@@ -264,7 +283,7 @@ export default function SignUp() {
                     placeholder="••••••"
                     className={`mt-1 block w-full rounded-md border ${
                       errors.password ? "border-red-500" : "border-gray-300"
-                    } p-3 focus:outline-none focus:ring-2 focus:ring-purple-500 transition duration-200`}
+                    } p-3 focus:outline-none focus:ring-2 focus:ring-purple-500 transition duration-200 bg-white/70 backdrop-blur-sm`}
                   />
                   {errors.password && (
                     <motion.p
@@ -295,7 +314,7 @@ export default function SignUp() {
                       errors.confirmPassword
                         ? "border-red-500"
                         : "border-gray-300"
-                    } p-3 focus:outline-none focus:ring-2 focus:ring-purple-500 transition duration-200`}
+                    } p-3 focus:outline-none focus:ring-2 focus:ring-purple-500 transition duration-200 bg-white/70 backdrop-blur-sm`}
                   />
                   {errors.confirmPassword && (
                     <motion.p
@@ -401,6 +420,46 @@ export default function SignUp() {
           </>
         )}
       </motion.div>
+
+      {/* Add this to your global CSS or style tag */}
+      <style>{`
+        @keyframes float-slow {
+          0%,
+          100% {
+            transform: translateY(0) translateX(0);
+          }
+          50% {
+            transform: translateY(-20px) translateX(10px);
+          }
+        }
+        @keyframes float-medium {
+          0%,
+          100% {
+            transform: translateY(0) translateX(0);
+          }
+          50% {
+            transform: translateY(-15px) translateX(-15px);
+          }
+        }
+        @keyframes float-fast {
+          0%,
+          100% {
+            transform: translateY(0) translateX(0);
+          }
+          50% {
+            transform: translateY(-10px) translateX(5px);
+          }
+        }
+        .animate-float-slow {
+          animation: float-slow 8s ease-in-out infinite;
+        }
+        .animate-float-medium {
+          animation: float-medium 6s ease-in-out infinite;
+        }
+        .animate-float-fast {
+          animation: float-fast 4s ease-in-out infinite;
+        }
+      `}</style>
     </div>
   );
 }
