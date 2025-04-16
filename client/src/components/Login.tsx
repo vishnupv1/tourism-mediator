@@ -141,7 +141,7 @@ const Login: React.FC<LoginProps> = ({ onClose }) => {
             </>
           ) : (
             <>
-              <div className="flex gap-2 mb-4">
+              <div className="flex gap-2 mb-4 justify-center">
                 {otp.map((digit, index) => (
                   <input
                     key={index}
