@@ -1,92 +1,35 @@
-// src/components/LandingPage.tsx
-import { Container, Typography, Button, Box } from "@mui/material";
-import { ThemeProvider, CssBaseline } from "@mui/material";
-import AppTheme from "../theme/AppTheme"; // Your custom theme
 import { Link } from "react-router-dom";
 
 const LandingPage = () => {
   return (
-    <ThemeProvider theme={AppTheme}>
-      <CssBaseline />
-      <Box
-        sx={{
-          position: "relative",
-          minHeight: "100vh",
-          backgroundImage:
-            'url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e")',
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          textAlign: "center",
-          color: "#fff",
-        }}
-      >
-        {/* Overlay */}
-        <Box
-          sx={{
-            position: "absolute",
-            inset: 0,
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-            zIndex: 1,
-          }}
-        />
+    <div
+      className="relative min-h-screen bg-cover bg-center bg-no-repeat flex items-center justify-center text-white"
+      style={{
+        backgroundImage:
+          'url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e")',
+      }}
+    >
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black bg-opacity-50 z-0" />
 
-        {/* Content */}
-        <Container
-          sx={{
-            position: "relative",
-            zIndex: 2,
-            padding: { xs: "2rem 1rem", md: "4rem" },
-          }}
+      {/* Content */}
+      <div className="relative z-10 px-4 text-center max-w-4xl">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 drop-shadow-lg">
+          Explore the World with Us
+        </h1>
+        <p className="text-lg sm:text-xl md:text-2xl mb-8 max-w-3xl mx-auto drop-shadow-md">
+          Your gateway to unforgettable travel experiences. Discover
+          destinations, book your next adventure, and make memories that last a
+          lifetime.
+        </p>
+        <Link
+          to="/signup"
+          className="inline-block bg-purple-600 text-white text-lg font-semibold py-3 px-8 rounded-full shadow-lg uppercase transition duration-300 hover:text-white"
         >
-          <Typography
-            variant="h2"
-            component="h1"
-            sx={{
-              fontWeight: "bold",
-              fontSize: { xs: "2.5rem", sm: "3rem", md: "4rem" },
-              mb: 2,
-              textShadow: "2px 2px 6px rgba(0,0,0,0.6)",
-            }}
-          >
-            Explore the World with Us
-          </Typography>
-          <Typography
-            variant="h5"
-            sx={{
-              maxWidth: "700px",
-              margin: "0 auto",
-              mb: 4,
-              fontSize: { xs: "1.2rem", md: "1.5rem" },
-              textShadow: "1px 1px 3px rgba(0,0,0,0.5)",
-            }}
-          >
-            Your gateway to unforgettable travel experiences. Discover
-            destinations, book your next adventure, and make memories that last
-            a lifetime.
-          </Typography>
-          <Button
-            variant="contained"
-            color="secondary"
-            size="large"
-            component={Link}
-            to="/signup"
-            sx={{
-              padding: "12px 32px",
-              fontSize: "1rem",
-              borderRadius: "30px",
-              boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
-              textTransform: "uppercase",
-            }}
-          >
-            Start Exploring
-          </Button>
-        </Container>
-      </Box>
-    </ThemeProvider>
+          Start Exploring
+        </Link>
+      </div>
+    </div>
   );
 };
 
