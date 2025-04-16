@@ -34,7 +34,6 @@ const Login: React.FC<LoginProps> = ({ onClose }) => {
   ) => {
     const value = e.target.value;
     const newOtp = [...otp];
-    console.log("value",value, index, newOtp, "OTP before change:", otp);
 
     // If the value is a number and it's only one character, allow it
     if (/^[0-9]{0,1}$/.test(value)) {
@@ -51,8 +50,6 @@ const Login: React.FC<LoginProps> = ({ onClose }) => {
     }
     // If the value is empty and the index is greater than 0, focus the previous input
     else if (value === "" && index > 0) {
-      console.log("Empty value detected, focusing previous input");
-
       const prevInput = document.getElementById(`otp-input-${index - 1}`); // Focus previous input
       if (prevInput) {
         (prevInput as HTMLInputElement).focus();
@@ -148,10 +145,24 @@ const Login: React.FC<LoginProps> = ({ onClose }) => {
                 {otp.map((digit, index) => (
                   <input
                     key={index}
-                    id={`otp-input-${index}`} // Add id for focusing
+                    id={`otp-input-${index}`}
                     type="text"
                     value={digit}
                     onChange={(e) => handleOtpChange(e, index)}
+                    onKeyDown={(e) => {
+                      if (
+                        e.key === "Backspace" &&
+                        otp[index] === "" &&
+                        index > 0
+                      ) {
+                        const prevInput = document.getElementById(
+                          `otp-input-${index - 1}`
+                        );
+                        if (prevInput) {
+                          (prevInput as HTMLInputElement).focus();
+                        }
+                      }
+                    }}
                     maxLength={1}
                     title={`Enter digit ${index + 1} of the OTP`}
                     className={`w-12 h-12 text-center border text-gray-600 ${
