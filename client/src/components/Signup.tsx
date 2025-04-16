@@ -1,71 +1,19 @@
-import * as React from "react";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Checkbox from "@mui/material/Checkbox";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormLabel from "@mui/material/FormLabel";
-import FormControl from "@mui/material/FormControl";
-import Link from "@mui/material/Link";
-import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
-import Stack from "@mui/material/Stack";
-import MuiCard from "@mui/material/Card";
-import { styled } from "@mui/material/styles";
-import { CssBaseline, ThemeProvider } from "@mui/material";
-import AppTheme from "../theme/AppTheme"; // Your custom theme
-
-// Styled Card for the signup form
-const Card = styled(MuiCard)(({ theme }) => ({
-  display: "flex",
-  flexDirection: "column",
-  width: "100%",
-  padding: theme.spacing(4),
-  gap: theme.spacing(2),
-  margin: "auto",
-  borderRadius: theme.spacing(2),
-  backgroundColor: "rgba(255, 255, 255, 0.95)",
-  backdropFilter: "blur(10px)",
-  [theme.breakpoints.up("sm")]: {
-    maxWidth: "450px",
-  },
-  boxShadow: theme.shadows[5],
-}));
-
-// Styled container with a beautiful tourism-themed background
-const SignUpContainer = styled(Stack)(({ theme }) => ({
-  position: "relative",
-  height: "100vh",
-  width: "100%",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  padding: theme.spacing(2),
-  backgroundImage: `
-    linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-    url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1470&q=80")
-  `,
-  backgroundSize: "cover",
-  backgroundPosition: "center",
-  backgroundRepeat: "no-repeat",
-  [theme.breakpoints.up("sm")]: {
-    padding: theme.spacing(4),
-  },
-}));
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function SignUp() {
-  const [emailError, setEmailError] = React.useState(false);
-  const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
-  const [passwordError, setPasswordError] = React.useState(false);
-  const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
-  const [confirmPasswordError, setConfirmPasswordError] = React.useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [emailErrorMessage, setEmailErrorMessage] = useState("");
+  const [passwordError, setPasswordError] = useState(false);
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState(false);
   const [confirmPasswordErrorMessage, setConfirmPasswordErrorMessage] =
-    React.useState("");
+    useState("");
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    if (emailError || passwordError || confirmPasswordError) {
-      event.preventDefault();
-      return;
-    }
+    event.preventDefault();
+    if (!validateInputs()) return;
+
     const data = new FormData(event.currentTarget);
     console.log({
       email: data.get("email"),
@@ -113,101 +61,118 @@ export default function SignUp() {
   };
 
   return (
-    <ThemeProvider theme={AppTheme}>
-      <CssBaseline />
-      <SignUpContainer direction="column">
-        <Card variant="outlined">
-          <Typography
-            component="h1"
-            variant="h4"
-            sx={{
-              width: "100%",
-              fontSize: "clamp(2rem, 10vw, 2.15rem)",
-              textAlign: "center",
-            }}
+    <div
+      className="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat px-4"
+      style={{
+        backgroundImage:
+          'url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1470&q=80")',
+      }}
+    >
+      <div className="absolute inset-0 bg-black opacity-50 z-0" />
+      <div className="relative z-10 bg-white/90 backdrop-blur-lg p-8 rounded-2xl shadow-xl w-full max-w-md">
+        <h1 className="text-3xl sm:text-4xl font-bold text-center mb-6 text-gray-800">
+          Sign Up
+        </h1>
+        <form className="space-y-4" onSubmit={handleSubmit} noValidate>
+          <div>
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Email
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="your@email.com"
+              required
+              className={`mt-1 block w-full rounded-md border ${
+                emailError ? "border-red-500" : "border-gray-300"
+              } p-2.5 focus:outline-none focus:ring-2 focus:ring-purple-500`}
+            />
+            {emailError && (
+              <p className="text-red-500 text-sm mt-1">{emailErrorMessage}</p>
+            )}
+          </div>
+
+          <div>
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Password
+            </label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              placeholder="••••••"
+              required
+              className={`mt-1 block w-full rounded-md border ${
+                passwordError ? "border-red-500" : "border-gray-300"
+              } p-2.5 focus:outline-none focus:ring-2 focus:ring-purple-500`}
+            />
+            {passwordError && (
+              <p className="text-red-500 text-sm mt-1">
+                {passwordErrorMessage}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <label
+              htmlFor="confirm-password"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Confirm Password
+            </label>
+            <input
+              id="confirm-password"
+              name="confirm-password"
+              type="password"
+              placeholder="••••••"
+              required
+              className={`mt-1 block w-full rounded-md border ${
+                confirmPasswordError ? "border-red-500" : "border-gray-300"
+              } p-2.5 focus:outline-none focus:ring-2 focus:ring-purple-500`}
+            />
+            {confirmPasswordError && (
+              <p className="text-red-500 text-sm mt-1">
+                {confirmPasswordErrorMessage}
+              </p>
+            )}
+          </div>
+
+          <div className="flex items-center">
+            <input
+              id="terms"
+              type="checkbox"
+              className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
+            />
+            <label htmlFor="terms" className="ml-2 block text-sm text-gray-700">
+              I agree to the terms and conditions
+            </label>
+          </div>
+
+          <button
+            type="submit"
+            className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2.5 rounded-md shadow transition duration-300"
           >
             Sign Up
-          </Typography>
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              width: "100%",
-              gap: 2,
-            }}
-          >
-            <FormControl>
-              <FormLabel htmlFor="email">Email</FormLabel>
-              <TextField
-                error={emailError}
-                helperText={emailErrorMessage}
-                id="email"
-                type="email"
-                name="email"
-                placeholder="your@email.com"
-                autoComplete="email"
-                autoFocus
-                required
-                fullWidth
-                variant="outlined"
-                color={emailError ? "error" : "primary"}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel htmlFor="password">Password</FormLabel>
-              <TextField
-                error={passwordError}
-                helperText={passwordErrorMessage}
-                name="password"
-                placeholder="••••••"
-                type="password"
-                id="password"
-                autoComplete="new-password"
-                required
-                fullWidth
-                variant="outlined"
-                color={passwordError ? "error" : "primary"}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel htmlFor="confirm-password">Confirm Password</FormLabel>
-              <TextField
-                error={confirmPasswordError}
-                helperText={confirmPasswordErrorMessage}
-                name="confirm-password"
-                placeholder="••••••"
-                type="password"
-                id="confirm-password"
-                required
-                fullWidth
-                variant="outlined"
-                color={confirmPasswordError ? "error" : "primary"}
-              />
-            </FormControl>
-            <FormControlLabel
-              control={<Checkbox value="agree" color="primary" />}
-              label="I agree to the terms and conditions"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              onClick={validateInputs}
+          </button>
+
+          <p className="text-center text-sm text-gray-600 mt-4">
+            Already have an account?{" "}
+            <Link
+              to="/login"
+              className="text-purple-600 hover:underline font-medium"
             >
-              Sign up
-            </Button>
-            <Typography sx={{ textAlign: "center" }}>
-              Already have an account?{" "}
-              <Link href="/login" variant="body2">
-                Sign in
-              </Link>
-            </Typography>
-          </Box>
-        </Card>
-      </SignUpContainer>
-    </ThemeProvider>
+              Sign in
+            </Link>
+          </p>
+        </form>
+      </div>
+    </div>
   );
 }
