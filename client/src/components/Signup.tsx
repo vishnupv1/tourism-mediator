@@ -143,7 +143,7 @@ export default function SignUp() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 overflow-hidden relative">
+    <div className="min-h-screen flex items-center justify-start px-4 overflow-hidden relative">
       {/* Abstract background elements */}
       <div className="absolute inset-0 overflow-hidden z-0">
         {/* Large floating circles */}

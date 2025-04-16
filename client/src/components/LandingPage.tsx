@@ -1,6 +1,10 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import Login from "./Login"; // Adjust the import path as needed
 
 const LandingPage = () => {
+  const [showLogin, setShowLogin] = useState(false);
+
   return (
     <div
       className="relative min-h-screen bg-cover bg-center bg-no-repeat flex items-center justify-center text-white"
@@ -22,13 +26,26 @@ const LandingPage = () => {
           destinations, book your next adventure, and make memories that last a
           lifetime.
         </p>
-        <Link
-          to="/signup"
-          className="inline-block bg-purple-600 text-white text-lg font-semibold py-3 px-8 rounded-full shadow-lg uppercase transition duration-300 hover:text-white"
-        >
-          Start Exploring
-        </Link>
+
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <Link
+            to="/signup"
+            className="bg-purple-600 text-white text-lg font-semibold py-3 px-8 rounded-full shadow-lg uppercase transition duration-300 hover:bg-purple-700"
+          >
+            Start Exploring
+          </Link>
+
+          <button
+            onClick={() => setShowLogin(true)}
+            className="bg-white text-purple-600 text-lg font-semibold py-3 px-8 rounded-full shadow-lg uppercase transition duration-300 hover:bg-gray-200"
+          >
+            Login
+          </button>
+        </div>
       </div>
+
+      {/* Login Popup */}
+      {showLogin && <Login onClose={() => setShowLogin(false)} />}
     </div>
   );
 };
