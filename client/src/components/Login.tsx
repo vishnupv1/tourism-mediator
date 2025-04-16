@@ -7,6 +7,8 @@ interface LoginProps {
 
 const Login: React.FC<LoginProps> = ({ onClose }) => {
   const [email, setEmail] = useState<string>("");
+  const [otp, setOtp] = useState<string>("");
+  const [isOtpSent, setIsOtpSent] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
   const handleContinue = () => {
@@ -20,8 +22,32 @@ const Login: React.FC<LoginProps> = ({ onClose }) => {
     } else {
       setError("");
       console.log("Proceed with:", email);
-      // Add further login logic here
+      // Simulate sending OTP
+      setIsOtpSent(true);
     }
+  };
+
+  const handleOtpChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (/^[0-9]{0,6}$/.test(value)) {
+      setOtp(value);
+    }
+  };
+
+  const handleOtpSubmit = () => {
+    if (otp.length === 6) {
+      console.log("OTP Submitted:", otp);
+      // Add further OTP verification logic here
+    } else {
+      setError("Please enter a valid 6-digit OTP.");
+    }
+  };
+
+  const handleCancel = () => {
+    setEmail("");
+    setOtp("");
+    setIsOtpSent(false);
+    setError("");
   };
 
   return (
@@ -57,31 +83,76 @@ const Login: React.FC<LoginProps> = ({ onClose }) => {
               Login or Create an account
             </h2>
           </div>
-          <input
-            type="text"
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-              if (error) setError("");
-            }}
-            placeholder="Email ID or Mobile Number"
-            className={`w-full border text-gray-600 ${
-              error ? "border-red-500" : "border-gray-300"
-            } rounded px-4 py-2 mb-2 focus:outline-none focus:ring-0 focus:border-none ${
-              error ? "focus:ring-red-500" : "focus:ring-purple-500"
-            }`}
-          />
-          <button
-            onClick={handleContinue}
-            disabled={!email.trim()}
-            className={`w-full py-2 rounded text-lg font-medium focus:outline-none focus:ring-0 focus:border-none ${
-              !email.trim()
-                ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-                : "bg-purple-500 text-white hover:bg-purple-600"
-            }`}
-          >
-            Continue
-          </button>
+          {/* Conditional rendering of email input or OTP input */}
+          {!isOtpSent ? (
+            <>
+              <input
+                type="text"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  if (error) setError("");
+                }}
+                placeholder="Email ID or Mobile Number"
+                className={`w-full border text-gray-600 ${
+                  error ? "border-red-500" : "border-gray-300"
+                } rounded px-4 py-2 mb-2 focus:outline-purple-500 focus:ring-0 focus:border-none ${
+                  error ? "focus:ring-red-500" : "focus:ring-purple-500"
+                }`}
+              />
+              {error && (
+                <div className="text-red-500 text-sm mt-1">{error}</div>
+              )}
+              <button
+                onClick={handleContinue}
+                disabled={!email.trim()}
+                className={`w-full py-2 rounded text-lg font-medium focus:outline-none focus:ring-0 focus:border-none ${
+                  !email.trim()
+                    ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+                    : "bg-purple-500 text-white hover:bg-purple-600"
+                }`}
+              >
+                Continue
+              </button>
+            </>
+          ) : (
+            <>
+              <input
+                type="text"
+                value={otp}
+                onChange={handleOtpChange}
+                maxLength={6}
+                placeholder="Enter 6-digit OTP"
+                className={`w-full border text-gray-600 ${
+                  error ? "border-red-500" : "border-gray-300"
+                } rounded px-4 py-2 mb-2 focus:outline-none focus:ring-0 focus:border-none ${
+                  error ? "focus:ring-red-500" : "focus:ring-purple-500"
+                }`}
+              />
+              {error && (
+                <div className="text-red-500 text-sm mt-1">{error}</div>
+              )}
+              <div className="flex gap-2">
+                <button
+                  onClick={handleOtpSubmit}
+                  disabled={otp.length !== 6}
+                  className={`w-full py-2 rounded text-lg font-medium focus:outline-none focus:ring-0 focus:border-none ${
+                    otp.length !== 6
+                      ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+                      : "bg-purple-500 text-white hover:bg-purple-600"
+                  }`}
+                >
+                  Submit OTP
+                </button>
+                <button
+                  onClick={handleCancel}
+                  className="w-full py-2 rounded text-lg font-medium bg-gray-300 text-gray-600 hover:bg-gray-400"
+                >
+                  Cancel
+                </button>
+              </div>
+            </>
+          )}
           <p className="text-xs text-gray-500 mt-4">
             By logging in, I understand & agree to the
             <br />
