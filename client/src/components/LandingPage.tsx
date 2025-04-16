@@ -30,14 +30,14 @@ const LandingPage = () => {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link
             to="/signup"
-            className="bg-purple-600 text-white text-lg font-semibold py-3 px-8 rounded-full shadow-lg uppercase transition duration-300 hover:bg-purple-700"
+            className="bg-purple-600 text-white text-lg font-semibold py-3 px-8 rounded-full shadow-lg uppercase transition duration-300 hover:bg-purple-700 focus:outline-none focus:ring-0 ring-0 border-none"
           >
             Start Exploring
           </Link>
 
           <button
             onClick={() => setShowLogin(true)}
-            className="bg-white text-purple-600 text-lg font-semibold py-3 px-8 rounded-full shadow-lg uppercase transition duration-300 hover:bg-gray-200"
+            className="bg-white text-purple-600 text-lg font-semibold py-3 px-8 rounded-full shadow-lg uppercase transition duration-300 hover:bg-gray-200 focus:outline-none focus:ring-0 ring-0 border-none"
           >
             Login
           </button>
