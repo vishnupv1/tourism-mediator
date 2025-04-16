@@ -7,7 +7,7 @@ interface LoginProps {
 
 const Login: React.FC<LoginProps> = ({ onClose }) => {
   const [email, setEmail] = useState<string>("");
-  const [otp, setOtp] = useState<string>("");
+  const [otp, setOtp] = useState<string[]>(new Array(6).fill("")); // Store OTP as an array of 6 characters
   const [isOtpSent, setIsOtpSent] = useState<boolean>(false);
   const [emailError, setEmailError] = useState<string>("");
   const [otpError, setOtpError] = useState<string>("");
@@ -28,16 +28,41 @@ const Login: React.FC<LoginProps> = ({ onClose }) => {
     }
   };
 
-  const handleOtpChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleOtpChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
     const value = e.target.value;
-    if (/^[0-9]{0,6}$/.test(value)) {
-      setOtp(value);
+    const newOtp = [...otp];
+    console.log("value",value, index, newOtp, "OTP before change:", otp);
+
+    // If the value is a number and it's only one character, allow it
+    if (/^[0-9]{0,1}$/.test(value)) {
+      newOtp[index] = value;
+      setOtp(newOtp);
+
+      // If the field is filled, focus the next input
+      if (value && index < otp.length - 1) {
+        const nextInput = document.getElementById(`otp-input-${index + 1}`);
+        if (nextInput) {
+          (nextInput as HTMLInputElement).focus();
+        }
+      }
+    }
+    // If the value is empty and the index is greater than 0, focus the previous input
+    else if (value === "" && index > 0) {
+      console.log("Empty value detected, focusing previous input");
+
+      const prevInput = document.getElementById(`otp-input-${index - 1}`); // Focus previous input
+      if (prevInput) {
+        (prevInput as HTMLInputElement).focus();
+      }
     }
   };
 
   const handleOtpSubmit = () => {
-    if (otp.length === 6) {
-      console.log("OTP Submitted:", otp);
+    if (otp.join("").length === 6) {
+      console.log("OTP Submitted:", otp.join(""));
       // Add further OTP verification logic here
     } else {
       setOtpError("Please enter a valid 6-digit OTP.");
@@ -46,7 +71,7 @@ const Login: React.FC<LoginProps> = ({ onClose }) => {
 
   const handleCancel = () => {
     setEmail("");
-    setOtp("");
+    setOtp(new Array(6).fill("")); // Reset OTP
     setIsOtpSent(false);
     setEmailError("");
     setOtpError("");
@@ -119,27 +144,33 @@ const Login: React.FC<LoginProps> = ({ onClose }) => {
             </>
           ) : (
             <>
-              <input
-                type="text"
-                value={otp}
-                onChange={handleOtpChange}
-                maxLength={6}
-                placeholder="Enter 6-digit OTP"
-                className={`w-full border text-gray-600 ${
-                  otpError ? "border-red-500" : "border-gray-300"
-                } rounded px-4 py-2 mb-2 focus:outline-none focus:ring-0 focus:border-none ${
-                  otpError ? "focus:ring-red-500" : "focus:ring-purple-500"
-                }`}
-              />
+              <div className="flex gap-2 mb-4">
+                {otp.map((digit, index) => (
+                  <input
+                    key={index}
+                    id={`otp-input-${index}`} // Add id for focusing
+                    type="text"
+                    value={digit}
+                    onChange={(e) => handleOtpChange(e, index)}
+                    maxLength={1}
+                    title={`Enter digit ${index + 1} of the OTP`}
+                    className={`w-12 h-12 text-center border text-gray-600 ${
+                      otpError ? "border-red-500" : "border-gray-300"
+                    } rounded focus:outline-purple-500 focus:ring-0 focus:border-none ${
+                      otpError ? "focus:ring-red-500" : "focus:ring-purple-500"
+                    }`}
+                  />
+                ))}
+              </div>
               {otpError && (
                 <div className="text-red-500 text-sm mt-1">{otpError}</div>
               )}
               <div className="flex gap-2">
                 <button
                   onClick={handleOtpSubmit}
-                  disabled={otp.length !== 6}
+                  disabled={otp.join("").length !== 6}
                   className={`w-full py-2 rounded text-lg font-medium focus:outline-none focus:ring-0 focus:border-none ${
-                    otp.length !== 6
+                    otp.join("").length !== 6
                       ? "bg-gray-300 text-gray-600 cursor-not-allowed"
                       : "bg-purple-500 text-white hover:bg-purple-600"
                   }`}
