@@ -2,6 +2,7 @@
 import { Container, Typography, Button, Box } from "@mui/material";
 import { ThemeProvider, CssBaseline } from "@mui/material";
 import AppTheme from "../theme/AppTheme"; // Your custom theme
+import { Link } from "react-router-dom";
 
 const LandingPage = () => {
   return (
@@ -71,7 +72,8 @@ const LandingPage = () => {
             variant="contained"
             color="secondary"
             size="large"
-            href="/signup"
+            component={Link}
+            to="/signup"
             sx={{
               padding: "12px 32px",
               fontSize: "1rem",
